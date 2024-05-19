@@ -16,7 +16,6 @@ const userRoutes = require('./routes/userRoutes');
 app.get('/api/idols', idolRoutes);
 app.get('/api/idols/:name', idolRoutes);
 app.post('/api/idols/', idolRoutes);
-app.patch('/api/idols/:name', idolRoutes);
 
 // Group routes
 app.get('/api/boy-groups', groupRoutes);
@@ -25,8 +24,6 @@ app.get('/api/boy-groups/:name', groupRoutes);
 app.get('/api/girl-groups/:name', groupRoutes);
 app.get('/api/groups', groupRoutes);
 app.get('/api/groups/:name', groupRoutes);
-app.post('/api/groups', groupRoutes);
-app.patch('/api/groups/:name', groupRoutes);
 
 // Video routes
 app.get('/api/videos', videoRoutes);
@@ -36,9 +33,8 @@ app.get('/api/videos/:searchTerm', videoRoutes);
 // User routes
 app.post('/api/register', userRoutes);
 app.post('/api/login', userRoutes);
-app.get('/api/users', userRoutes);
-app.get('/api/users/:userId', userRoutes);
-app.patch('/api/users/:userId', userRoutes);
+app.get('/api/users/profile/:username', userRoutes);
+app.patch('/api/users/:username', userRoutes);
 app.delete('/api/users/:userId', userRoutes);
 
 /** Handle 404 errors -- this matches everything */

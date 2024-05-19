@@ -4,9 +4,7 @@ const {
     getBoyGroups,
     getBoyGroupByName,
     getGirlGroups,
-    getGirlGroupByName,
-    addKpopGroup,
-    updateKpopGroup
+    getGirlGroupByName
 } = require('../models/groupsModel');
 
 // Route to get all boy groups
@@ -97,57 +95,5 @@ router.get('/api/groups/:name', async (req, res, next) => {
         next(error);
     }
 });
-
-
-// POST route to add a new group
-router.post('/api/groups', async (req, res, next) => {
-    try {
-        const { group_name, short, korean_name, debut, company, members, original_memb, fanclub_name, active, group_type } = req.body;
-
-        // Call the function to add the group to the database
-        await addKpopGroup(group_name, short, korean_name, debut, company, members, original_memb, fanclub_name, active, group_type);
-
-        // Return success message
-        res.status(201).json({ message: 'K-pop group added successfully' });
-    } catch (error) {
-        next(error);
-    }
-});
-
-// PATCH route to update group information by name
-// router.patch('/api/groups/:name', async (req, res, next) => {
-//     const { name } = req.params;
-//     const updates = req.body
-//     const groupType = determineGroupType(name)
-
-//     try {
-//         // Call the function to update the group information
-//         await updateKpopGroup(name, { company, members, fanclub_name, active }, group_type);
-
-//         // Return success message
-//         res.status(201).json({ message: 'K-pop group information updated successfully' });
-//     } catch (error) {
-//         console.error("Error updating Kpop group profile", error)
-//         next(error);
-//     }
-// });
-
-// // Route to update K-pop group information
-router.patch('/api/groups/:name', async (req, res, next) => {
-    const { name } = req.params;
-    const updates = req.body;
-    try {
-
-        // Call the function to update the K-pop group
-        const message = await updateKpopGroup(name, updates);
-
-        // Return a success message
-        res.status(200).json({ message });
-    } catch (error) {
-        next(error); // Pass any errors to the error handling middleware
-    }
-});
-
-
 
 module.exports = router;

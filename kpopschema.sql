@@ -59,16 +59,16 @@ CREATE TABLE boy_groups (
 
 -- Create idols table 
 CREATE TABLE idols (
-  stage_name varchar,
+  stage_name varchar NOT NULL,
   full_name varchar NULL,
   korean_name varchar NULL,
   k_stage_name varchar NULL,
-  date_of_birth varchar NULL,
+  date_of_birth varchar NOT NULL,
   group_name varchar NULL,
   country varchar,
   birthplace varchar NULL,
   other_group varchar NULL,
-  gender varchar
+  gender varchar NOT NULL
 );
 
 -- Add unique constraint to username column in users table

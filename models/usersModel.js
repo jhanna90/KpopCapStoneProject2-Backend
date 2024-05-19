@@ -2,7 +2,7 @@ const db = require('../db');
 const { SECRET_KEY } = require('../config');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-// const { createToken } = require('../helpers/token')
+const { ExpressError } = require('../expressError');
 
 // Updated register function
 async function register(username, email, password, fav_boy_group, fav_girl_group, bias, alt_bias, bias_wrecker, fav_girl_group_song, fav_boy_group_song) {
@@ -32,38 +32,6 @@ async function register(username, email, password, fav_boy_group, fav_girl_group
 };
 
 // Login function
-// async function login(username, password) {
-//     try {
-//         // Retrieve the user from the database by username
-//         const query = `
-//             SELECT id, password
-//             FROM users
-//             WHERE username = $1;`;
-
-//         const result = await db.query(query, [username]);
-
-//         if (result.rows.length === 0) {
-//             throw new Error('Invalid username or password');
-//         }
-
-//         const { id, password: hashedPassword } = result.rows[0];
-
-//         // Compare the provided password with the hashed password from the database
-//         const isMatch = await bcrypt.compare(password, hashedPassword);
-
-//         if (!isMatch) {
-//             throw new Error('Invalid username or password');
-//         }
-
-//         // Generate JWT token
-//         const token = jwt.sign({ userId: id }, SECRET_KEY);
-//         return { message: 'Logged in successfully', userId: id, token };
-//         // return { userId: id, token };
-//     } catch (error) {
-//         throw error;
-//     }
-// }
-
 async function login(username, password) {
     try {
         // Retrieve the user from the database by username
@@ -95,35 +63,12 @@ async function login(username, password) {
     }
 }
 
-
-// // Function to retrieve user profile data by username
-// async function getUserByUsername(username) {
-//     try {
-//         // Query the database to fetch user profile data based on the username
-//         const query = `
-//             SELECT id, username, email, fav_boy_group, fav_girl_group, bias, alt_bias, bias_wrecker, fav_girl_group_song, fav_boy_group_song
-//             FROM users
-//             WHERE username = $1;`;
-
-//         const result = await db.query(query, [username]);
-
-//         if (result.rows.length === 0) {
-//             return null; // Return null if user not found
-//         }
-
-//         return result.rows[0]; // Return the user profile data
-//     } catch (error) {
-//         console.error('Error fetching user profile by username:', error);
-//         throw error;
-//     }
-// }
-
-
-
+// Function to retrieve user by username
 async function getUserByUsername(username) {
     try {
+        // Retrieve the user from the database by username
         const query = `
-            SELECT id, username, email, fav_boy_group, fav_girl_group, bias, alt_bias, bias_wrecker, fav_girl_group_song, fav_boy_group_song
+            SELECT id, username, fav_boy_group, fav_girl_group, bias, alt_bias, bias_wrecker, fav_girl_group_song, fav_boy_group_song
             FROM users
             WHERE username = $1;`;
 
@@ -135,28 +80,7 @@ async function getUserByUsername(username) {
 
         return result.rows[0]; // Return the user object
     } catch (error) {
-        console.error('Error retrieving user by username:', error);
-        throw error;
-    }
-}
-
-async function getUserById(userId) {
-    try {
-        // Retrieve the user from the database by ID
-        const query = `
-            SELECT id, username, fav_boy_group, fav_girl_group, bias, alt_bias, bias_wrecker, fav_girl_group_song, fav_boy_group_song
-            FROM users
-            WHERE id = $1;`;
-
-        const result = await db.query(query, [userId]);
-
-        if (result.rows.length === 0) {
-            return null; // Return null if user not found
-        }
-
-        return result.rows[0]; // Return the user object
-    } catch (error) {
-        console.error('Error getting user by ID:', error);
+        console.error('Error getting user by username:', error);
         throw error;
     }
 }
@@ -176,15 +100,11 @@ async function getAllUsers() {
     }
 }
 
-async function updateUserProfile(userId, updates) {
+async function updateUserProfile(username, updates) {
     try {
-        // Check if the user ID in the token matches the user ID of the profile being updated
-        if (userId !== updates.userId) {
-            throw new Error('unauthorized');
-        }
 
         // Extract the profile updates from the updates object
-        const { username, email, fav_boy_group, fav_girl_group, bias, alt_bias, bias_wrecker, fav_girl_group_song, fav_boy_group_song } = updates;
+        const { fav_boy_group, fav_girl_group, bias, alt_bias, bias_wrecker, fav_girl_group_song, fav_boy_group_song } = updates;
 
         // Construct the UPDATE query based on the provided updates
         let query = 'UPDATE users SET';
@@ -192,16 +112,6 @@ async function updateUserProfile(userId, updates) {
         let index = 1;
 
         // Add each field to the query if it exists in the updates object
-        if (username !== undefined) {
-            query += ` username = $${index},`;
-            values.push(username);
-            index++;
-        }
-        if (email !== undefined) {
-            query += ` email = $${index},`;
-            values.push(email);
-            index++;
-        }
         if (fav_boy_group !== undefined) {
             query += ` fav_boy_group = $${index},`;
             values.push(fav_boy_group);
@@ -242,10 +152,10 @@ async function updateUserProfile(userId, updates) {
         query = query.slice(0, -1);
 
         // Add the WHERE clause to the query
-        query += ' WHERE id = $' + index;
-        values.push(userId);
+        query += ' WHERE username = $' + index;
+        values.push(username);
 
-        // Execute the UPDATE query with the provided updates and user ID
+        // Execute the UPDATE query with the provided updates and username
         await db.query(query, values);
 
         return 'Profile updated successfully'; // Return a success message
@@ -255,22 +165,26 @@ async function updateUserProfile(userId, updates) {
     }
 }
 
-// Function to delete a user profile
-async function deleteUser(username) {
+async function deleteUser(username, authenticatedUser) {
     try {
-        // Delete the user from the database based on the user ID
+        // Check if the authenticated user matches the user associated with the account being deleted
+        if (username !== authenticatedUser.username) {
+            throw new ExpressError('Unauthorized: You are not authorized to delete this account', 403);
+        }
+
         const query = `
             DELETE FROM users
             WHERE username = $1;`;
-        const result = await db.query(query, [username]);
 
-        // Check if any rows were affected by the delete operation
-        if (result.rowCount === 0) {
-            throw new Error('User not found');
-        }
+        await db.query(query, [username]);
+        // Optionally, perform any additional cleanup or related actions
+
+        return true; // Indicate successful deletion
     } catch (error) {
-        // Throw an error if the deletion fails
-        console.error('Error deleting user profile:', error);
+        // If it's not an instance of ExpressError, wrap it in one
+        if (!(error instanceof ExpressError)) {
+            throw new ExpressError('An error occurred while deleting user profile', 500);
+        }
         throw error;
     }
 }
@@ -278,7 +192,6 @@ async function deleteUser(username) {
 module.exports = {
     register,
     login,
-    getUserById,
     getAllUsers,
     deleteUser,
     updateUserProfile,

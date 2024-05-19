@@ -1,16 +1,17 @@
-// // authMiddleware.js
-
 const jwt = require('jsonwebtoken');
 const { SECRET_KEY } = require('../config');
-const { ExpressError } = require("../expressError")
 
 function authenticateJWT(req, res, next) {
     try {
         // Extract the token from the request body
-        const token = req.body.token;
+        // const token = req.body.token;
 
+        const token = req.headers.authorization.split(' ')[1];
         // Verify the token
         const decoded = jwt.verify(token, SECRET_KEY);
+
+        // Log the decoded token payload
+        console.log(decoded);
 
         // Attach the decoded token payload to the request object for further processing
         req.user = decoded;

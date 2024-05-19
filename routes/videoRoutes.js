@@ -19,7 +19,7 @@ router.get('/api/videos/:searchTerm', async (req, res, next) => {
         const videos = await searchVideos(searchTerm);
 
         if (videos.length === 0) {
-            return res.status(404).json({ error: 'No videos found. Would you like to add it?' });
+            return res.status(404).json({ error: 'Sorry! Video not found 😢. Would you like to add it?' });
         }
 
         return res.json({ videos });

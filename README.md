@@ -1,3 +1,46 @@
+# Kpop Capstone Project 2
+Project Title: Kpop Explorer
+URL: https://kpopcapstoneproject2-backend.onrender.com
+
+
+# Description
+The Kpop Fan Site is a web application dedicated to fans of Kpop music. It allows users to explore various Kpop artists and group profiles with detailed information about them. Users can also create an account that will provide them with a profile that shows the user's favorite groups, members, and songs. Users can update this profile to their current favorites as long as they are logged in. The site also has a videos section allowing users to search for a video they want to see. If the video is not in the database the user can add it by filling out the form and providing a YouTube link to the music video. Users can also do this with the idol section of the website. The site aims to create an engaging and interactive experience for Kpop enthusiasts.
+
+Features
+Artist Profiles: Users can view detailed profiles of various Kpop artists.
+User Authentication: Secure login and registration for users to personalize their experience and access exclusive content.
+Search Functionality: A powerful search feature that allows users to quickly find their favorite idols, groups or music videos.
+Responsive Design: The site is fully responsive, ensuring a seamless experience on both desktop and mobile devices.
+Reason for Feature Selection
+These features were chosen to provide a comprehensive and engaging experience for users. By offering detailed idols and group profiles, user authentication, and the ability to search videos the site ensures that fans have access to a wealth of information and can personalize their interaction with the site.
+
+User Flow
+Landing Page: Users arrive at the landing page, which features the latest news and highlighted artists.
+Explore Artists: Users can navigate to the artists' section to browse and search for their favorite Kpop artists.
+View Artist Profile: Upon selecting an artist, users are taken to a detailed profile page with biography, discography, and social media links.
+Authentication: Users can register for an account or log in to access personalized features and exclusive content.
+Personalized Experience: Logged-in users can save their favorite artists, receive recommendations, and customize their news feed.
+API Documentation
+The site uses the following APIs:
+
+Kpop Artists API: Provides detailed information about Kpop artists, including biographies and discographies.
+Kpop News API: Delivers the latest news articles related to Kpop music.
+Custom API
+If you have created a custom API, please document the process here, including:
+
+Endpoints
+Request and response formats
+Authentication methods (if any)
+Technology Stack
+Frontend: React, Redux, JavaScript, HTML, CSS
+Backend: Node.js, Express.js, MongoDB
+Testing: Jest, React Testing Library
+Deployment: [Your Deployment Service] (e.g., Heroku, Vercel)
+Additional Information
+Project Setup: Detailed setup instructions for both the frontend and backend can be found in their respective README.md files.
+Contributions: Contributions are welcome! Please fork the repository and submit a pull request with your changes.
+Contact: For any questions or issues, please open an issue in the GitHub repository or contact [Your Contact Information].
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

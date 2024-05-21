@@ -1,6 +1,6 @@
 # Kpop Capstone Project 2
 Project Title: Kpop Explorer
-URL: https://kpopcapstoneproject2-backend.onrender.com
+URL: https://kpopexplorer-jhanna.surge.sh/
 
 # Description
 The Kpop Fan Site is a web application dedicated to fans of Kpop music. It allows users to explore various Kpop artists and group profiles with detailed information about them. Users can also create an account that will provide them with a profile that shows the user's favorite groups, members, and songs. Users can update this profile to their current favorites as long as they are logged in. The site also has a videos section allowing users to search for a video they want to see. If the video is not in the database the user can add it by filling out the form and providing a YouTube link to the music video. Users can also do this with the idol section of the website. The site aims to create an engaging and interactive experience for Kpop enthusiasts.
@@ -15,13 +15,13 @@ Reason for Feature Selection
 These features were chosen to provide a comprehensive and engaging experience for users. By offering detailed idols and group profiles, user authentication, and the ability to search videos the site ensures that fans have access to a wealth of information and can personalize their interaction with the site.
 
 # User Flow
-Landing Page: Users arrive at the landing page, which features the latest news and highlighted artists.
-Explore Artists: Users can navigate to the artists' section to browse and search for their favorite Kpop artists.
-View Artist Profile: Upon selecting an artist, users are taken to a detailed profile page with biography, discography, and social media links.
-Authentication: Users can register for an account or log in to access personalized features and exclusive content.
-Personalized Experience: Logged-in users can save their favorite artists, receive recommendations, and customize their news feed.
-API Documentation
-The site uses the following APIs:
+Landing Page: Users arrive at the landing page, which features a welcome message and lets users know they can explore the site.
+Explore Artists: Users can navigate to the idols section to browse and search for their favorite Kpop idols. If the Idol is not there they can fill out a form and add the idol to the database. 
+View Idol Profile: Upon selecting an artist, users are taken to a profile page with information about the individual Idol, more features to be added later, like social media links, song names, etc...
+Authentication: Users can register for an account or log in to access a personalized profile that shows their information. Users are also allowed to update and change this information as long as they are logged in.
+Videos: Users can search for their favorite Kpop videos and use the links to go to YouTube to see them. Adding the videos to the site will also be added later so the user stays on our site and isn't redirected to another site.
+Video Add: If a user searches for a video and it isn't there they are allowed to add that video by filling out a form and adding the video to the database. 
+Groups: Users can also search for their favorite groups and view a profile of them. An "add group" form will be added in later implementations so that a user can add a group that may not be in the database.
 
 # Database
 All information that would become my seed file for my PSQL DB came from - https://www.kaggle.com/datasets/kimjihoo/kpopdb
